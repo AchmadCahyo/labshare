@@ -1,0 +1,150 @@
+body {
+  background-color: #f3f0f7;
+  font-family: 'Poppins', sans-serif;
+  
+}
+
+.navbar {
+  background-color: #6f42c1;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .nav-link, .navbar-brand, .logout p {
+  color: #fff;
+}
+
+.navbar .nav-link:hover {
+  color: #d1c4e9;
+}
+
+.navbar .logout a {
+  color: #ffcccb;
+}
+
+.card {
+  box-shadow: 0 4px 12px rgba(108, 92, 231, 0.2);
+  transition: transform 0.3s ease-in-out;
+  border: none;
+  border-radius: 12px;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #6f42c1;
+}
+
+.table thead {
+  background-color: #6f42c1;
+  color: #fff;
+}
+
+.btn-primary {
+  background-color: #6f42c1;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #533997;
+}
+
+.btn-dark {
+  background-color: #4a148c;
+  transition: background-color 0.3s ease;
+}
+
+.btn-dark:hover {
+  background-color: #6f42c1;
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #6f42c1;
+  border-radius: 50%;
+  padding: 12px;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(108, 92, 231, 0.4);
+  transition: background-color 0.3s ease;
+}
+
+.back-to-top:hover {
+  background-color: #4a148c;
+}
+
+  /* Custom card design */
+  .custom-card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .custom-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-title {
+      font-weight: 700;
+      color: #4b0082; /* Warna ungu untuk judul kartu */
+  }
+
+  .btn-custom {
+      background-color: #6a0dad; /* Ungu gelap untuk tombol */
+      border: none;
+      color: white;
+      font-weight: bold;
+  }
+
+  .btn-custom:hover {
+      background-color: #7b2cbf; /* Ungu yang lebih terang saat hover */
+  }
+
+  .custom-badge {
+      background-color: #9b5de5; /* Warna ungu untuk badge */
+      font-size: 0.9rem;
+      font-weight: bold;
+  }
+
+  .table-striped tbody tr:hover {
+      background-color: #f1f1f1;
+  }
+
+  /* Custom modal style */
+  .modal-content {
+      border-radius: 20px;
+      padding: 20px;
+  }
+
+  .modal-header {
+      border-bottom: none;
+  }
+
+  /* Back to top button styling */
+  .back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: none;
+      z-index: 1000;
+  }
+
+  .back-to-top.show {
+      display: block;
+  }
+
+  .btn-warning {
+      background-color: #9b5de5; /* Warna ungu pada tombol */
+  }
+
+  .btn-warning:hover {
+      background-color: #7b2cbf; /* Warna ungu saat hover */
+  }
+  
