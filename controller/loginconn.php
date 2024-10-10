@@ -21,6 +21,7 @@ if ($validated_users) {
         $_SESSION['username'] = $validated_users['username'];
         $_SESSION['name'] = $validated_users['name'];
         $_SESSION['role'] = $validated_users['role']; // Mengambil role dari database
+        $_SESSION['id'] = $validated_users['id'];
 
         // Set cookie session yang berbeda berdasarkan role
         if ($validated_users['role'] == "guru") {

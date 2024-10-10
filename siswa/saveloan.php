@@ -2,7 +2,7 @@
 include '../config/conn.php';
 
 $id = $_POST['id'] ?? '';
-$borrower = $_POST['borrower_name'] ?? '';
+$borrower = $_POST['borrower_id'] ?? '';
 $idalat = $_POST['tools_id'] ?? '';
 $jumlah = $_POST['number_tools'] ?? '';
 $tgl_pinjam = $_POST['tgl_pinjam'] ?? '';
@@ -15,8 +15,9 @@ mysqli_begin_transaction($conn);
 
 try {
    // Query 1: Insert ke tabel peminjaman
-   $sqlInsert = "INSERT INTO peminjaman (borrower_name, tools_id, number_tools, loan_date, return_date, status, actual_return_date) 
+   $sqlInsert = "INSERT INTO peminjaman (borrower_id, tools_id, number_tools, loan_date, return_date, status, actual_return_date)
                   VALUES ('$borrower', '$idalat', '$jumlah', '$tgl_pinjam', '$tgl_kembali', '$status', '$actual_return_date')";
+   echo $sqlInsert;
    $exeInsert = mysqli_query($conn, $sqlInsert);
 
    if (!$exeInsert) {

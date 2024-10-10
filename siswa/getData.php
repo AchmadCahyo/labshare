@@ -1,8 +1,13 @@
 <?php
+session_start();
 include '../config/conn.php';
 
 $id = $_GET['id'] ?? 0;
-$sql = "SELECT peminjaman.*, barang.name FROM peminjaman INNER JOIN barang ON peminjaman.tools_id = barang.id WHERE peminjaman.id = $id";
+$user_id = $_SESSION['id'];
+$sql = "SELECT peminjaman.*, barang.name AS tool_name, users.name AS user_name FROM peminjaman
+INNER JOIN barang ON peminjaman.tools_id = barang.id
+INNER JOIN users ON peminjaman.borrower_id = users.id
+WHERE borrower_id = '$user_id'";
 $result = mysqli_query($conn, $sql);
 
 if ($result) {
@@ -12,14 +17,14 @@ if ($result) {
     <div class="mb-3 row">
         <label class="col-sm-3 col-form-label">Borrower</label>
         <div class="col-sm-9">
-            <p class="form-control-plaintext fw-bold">' . $data['borrower_name'] . '</p>
+            <p class="form-control-plaintext fw-bold">' . $data['user_name'] . '</p>
         </div>
     </div>
 
     <div class="mb-3 row">
         <label class="col-sm-3 col-form-label">Tools</label>
         <div class="col-sm-9">
-            <p class="form-control-plaintext fw-bold">' . $data['name'] . '</p>
+            <p class="form-control-plaintext fw-bold">' . $data['tool_name'] . '</p>
         </div>
     </div>
 

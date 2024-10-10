@@ -4,9 +4,16 @@ include "../config/conn.php";
 if (empty($_SESSION['username']) or empty($_SESSION['role'])) {
   echo "<script>alert('To open this page, please log in first!');document.location='../login.php'</script>";
 }
-$name = $_SESSION['name'];
-$query2 = "SELECT peminjaman.*, barang.name FROM peminjaman INNER JOIN barang ON peminjaman.tools_id = barang.id WHERE borrower_name = '$name' AND status = 'borrowed' OR status = 'wait'";
-$query3 = "SELECT peminjaman.*, barang.name FROM peminjaman INNER JOIN barang ON peminjaman.tools_id = barang.id WHERE borrower_name = '$name' AND status = 'returned'";
+$user_id = $_SESSION['id'];
+$query2 = "SELECT peminjaman.*, barang.name AS tool_name, users.name AS user_name FROM peminjaman 
+INNER JOIN barang ON peminjaman.tools_id = barang.id 
+INNER JOIN users ON peminjaman.borrower_id = users.id 
+WHERE borrower_id = '$user_id' AND (status = 'check' OR status = 'borrowed')";
+// echo $query2;
+$query3 = "SELECT peminjaman.*, barang.name AS tool_name, users.name AS user_name FROM peminjaman 
+INNER JOIN barang ON peminjaman.tools_id = barang.id 
+INNER JOIN users ON peminjaman.borrower_id = users.id 
+WHERE borrower_id = '$user_id' AND status = 'returned'";
 $exe = mysqli_query($conn, $query2);
 $exe3 = mysqli_query($conn, $query3);
 ?>
@@ -158,7 +165,7 @@ $exe3 = mysqli_query($conn, $query3);
   <!--Navbar START-->
   <nav class="navbar navbar-expand-lg fw-bold">
     <div class="container">
-      <a class="navbar-brand" href="#"><img class="logo" src="../assets/image/logolab.png" style="height: 40px;"
+      <a class="navbar-brand" href="../home.php"><img class="logo" src="../assets/image/logolab.png" style="height: 40px;"
           alt=""></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -226,8 +233,8 @@ $exe3 = mysqli_query($conn, $query3);
                   ?>
                     <tr>
                       <td><?= $no++ ?></td>
-                      <td><?= $data['borrower_name'] ?></td>
-                      <td><?= $data['name'] ?></td>
+                      <td><?= $data['user_name'] ?></td>
+                      <td><?= $data['tool_name'] ?></td>
                       <td><?= $data['number_tools'] ?> Items</td>
                       <td><?= $loan_date ?></td>
                       <td><?= $return_date ?></td>
@@ -235,7 +242,7 @@ $exe3 = mysqli_query($conn, $query3);
                         <?php if ($data['status'] === 'borrowed'): ?>
                           <form action="kembali.php" method="post">
                             <input type="hidden" name="id" value="<?= $data['id'] ?>">
-                            <button class="btn btn-warning" name="update">Return</button>
+                            <button class="btn btn-primary" name="update">Return</button>
                           </form>
                         <?php elseif ($data['status'] === 'wait'): ?>
                           <button class="btn btn-primary" data-bs-toggle="modal"
@@ -281,8 +288,8 @@ $exe3 = mysqli_query($conn, $query3);
                   ?>
                     <tr>
                       <td><?= $no++ ?></td>
-                      <td><?= $data['borrower_name'] ?></td>
-                      <td><?= $data['name'] ?></td>
+                      <td><?= $data['user_name'] ?></td>
+                      <td><?= $data['tool_name'] ?></td>
                       <td><?= $data['number_tools'] ?> Items</td>
                       <td><?= $loan_date ?></td>
                       <td><?= $return_date ?></td>

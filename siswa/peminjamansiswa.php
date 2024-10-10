@@ -8,8 +8,11 @@ if (empty($_SESSION['username']) || empty($_SESSION['role'])) {
 $query = "SELECT id, name FROM barang WHERE item_stock > 0"; // Hanya menampilkan alat yang masih tersedia
 $result = mysqli_query($conn, $query);
 
-$name = $_SESSION['name'];
-$query2 = "SELECT peminjaman.*, barang.name FROM peminjaman INNER JOIN barang ON peminjaman.tools_id = barang.id WHERE borrower_name = '$name' AND status = 'check' OR status = 'borrowed'";
+$user_id = $_SESSION['id'];
+$query2 = "SELECT peminjaman.*, barang.name AS tool_name, users.name AS user_name FROM peminjaman 
+INNER JOIN barang ON peminjaman.tools_id = barang.id 
+INNER JOIN users ON peminjaman.borrower_id = users.id 
+WHERE borrower_id = '$user_id' AND (status = 'check' OR status = 'borrowed')";
 $exe = mysqli_query($conn, $query2);
 ?>
 
@@ -229,8 +232,8 @@ $exe = mysqli_query($conn, $query2);
                                     ?>
                                         <tr>
                                             <td><?= $no++ ?></td>
-                                            <td><?= $data['borrower_name'] ?></td>
-                                            <td><?= $data['name'] ?></td>
+                                            <td><?= $data['user_name'] ?></td>
+                                            <td><?= $data['tool_name'] ?></td>
                                             <td><?= $data['number_tools'] ?> Items</td>
                                             <td><?= $loan_date ?></td>
                                             <td><?= $return_date ?></td>
@@ -240,7 +243,8 @@ $exe = mysqli_query($conn, $query2);
                                                 <?php elseif ($data['status'] === 'returned'): ?>
                                                     Returned
                                                 <?php elseif ($data['status'] === 'check'): ?>
-                                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#show" onclick="loadData(<?= $data['id'] ?>)">
+                                                    <button class="btn btn-primary" data-bs-toggle="modal"
+                                                        data-bs-target="#show" onclick="loadData(<?= $data['id'] ?>)">
                                                         Check
                                                     </button>
                                                 <?php else: ?>
@@ -256,7 +260,7 @@ $exe = mysqli_query($conn, $query2);
                             </table>
                         </div>
                         <span
-                            class="position-absolute top-0 start-30 translate-middle badge rounded-pill text-white btn btn-primary" ><i
+                            class="position-absolute top-0 start-30 translate-middle badge rounded-pill text-white btn btn-primary"><i
                                 class="fa-solid fa-desktop"></i></span>
                     </div>
                 </div>
@@ -336,8 +340,8 @@ $exe = mysqli_query($conn, $query2);
                         <div class="form-row">
                             <div class="form-group">
                                 <!-- <label>Borrower Name</label> -->
-                                <input type="text" name="borrower_name" class="form-control" id="nim" required
-                                    value="<?php echo $_SESSION['name'] ?>" hidden>
+                                <input type="text" name="borrower_id" class="form-control" id="nim" required
+                                    value="<?php echo $_SESSION['id'] ?>" hidden>
                             </div>
                         </div>
                         <div class="form-row mt-3">
@@ -379,7 +383,20 @@ $exe = mysqli_query($conn, $query2);
             });
         });
     </script>
-
+    <script>
+        function loadData(id) {
+            // Lakukan AJAX untuk mengambil data berdasarkan id
+            fetch(`getData.php ? id = $ {
+                    id
+                }`)
+                .then(response => response.text())
+                .then(data => {
+                    // Masukkan data yang diterima ke dalam modal
+                    document.getElementById('modalContent').innerHTML = data;
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+    </script>
     <!-- Modal Show Data -->
     <div class="modal fade" id="show" tabindex="-1" aria-labelledby="checkModalLabel" aria-hidden="true"
         data-bs-backdrop="static" data-bs-keyboard="false">
@@ -392,46 +409,6 @@ $exe = mysqli_query($conn, $query2);
                 <div class="modal-body">
                     <!-- Data akan dimuat di sini -->
                     <div id="modalContent">
-                        <div class="modal-body text-start">
-                            <!-- Display data in Bootstrap format -->
-                            <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Borrower</label>
-                                <div class="col-sm-9">
-                                    <p class="form-control-plaintext fw-bold">
-                                        <?= $data['borrower_name'] ?></p>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Tool</label>
-                                <div class="col-sm-9">
-                                    <p class="form-control-plaintext fw-bold">
-                                        <?= $data['name'] ?></p>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Loan
-                                    Amount</label>
-                                <div class="col-sm-9">
-                                    <p class="form-control-plaintext fw-bold">
-                                        <?= $data['number_tools'] ?> Items</p>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Loan Date</label>
-                                <div class="col-sm-9">
-                                    <p class="form-control-plaintext fw-bold">
-                                        <?= $data['loan_date'] ?></p>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Return
-                                    Date</label>
-                                <div class="col-sm-9">
-                                    <p class="form-control-plaintext fw-bold">
-                                        <?= $data['return_date'] ?></p>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

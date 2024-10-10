@@ -7,8 +7,12 @@ if (empty($_SESSION['username']) or empty($_SESSION['role'])) {
 $name = mysqli_real_escape_string($conn, $_SESSION['name']);
 $sql =  "SELECT * FROM barang";
 $sql3 = "SELECT * FROM peminjaman";
-$sql2 = "SELECT peminjaman.*, barang.name FROM peminjaman INNER JOIN barang ON peminjaman.tools_id = barang.id WHERE status = 'check'";
-$sql3 = "SELECT peminjaman.*, barang.name FROM peminjaman INNER JOIN barang ON peminjaman.tools_id = barang.id WHERE status = 'wait'";
+$sql2 = "SELECT peminjaman.*, barang.name AS tool_name, users.name AS user_name FROM peminjaman 
+INNER JOIN barang ON peminjaman.tools_id = barang.id 
+INNER JOIN users ON peminjaman.borrower_id = users.id  WHERE status = 'check'";
+$sql3 = "SELECT peminjaman.*, barang.name AS tool_name, users.name AS user_name FROM peminjaman 
+INNER JOIN barang ON peminjaman.tools_id = barang.id 
+INNER JOIN users ON peminjaman.borrower_id = users.id  WHERE status = 'wait'";
 $exe = mysqli_query($conn, $sql);
 $exe2 = mysqli_query($conn, $sql2);
 $exe3 = mysqli_query($conn, $sql3);
@@ -108,8 +112,8 @@ $exe3 = mysqli_query($conn, $sql3);
                                     while ($data = mysqli_fetch_array($exe2)) { ?>
                                         <tr>
                                             <td><?= $no++ ?></td>
-                                            <td><?= $data['borrower_name'] ?></td>
-                                            <td><?= $data['name'] ?></td>
+                                            <td><?= $data['user_name'] ?></td>
+                                            <td><?= $data['tool_name'] ?></td>
                                             <td><?= $data['number_tools'] ?> Items</td>
                                             <td><?= $data['loan_date'] ?></td>
                                             <td><?= $data['return_date'] ?></td>
@@ -153,8 +157,8 @@ $exe3 = mysqli_query($conn, $sql3);
                                     while ($data = mysqli_fetch_array($exe3)) { ?>
                                         <tr>
                                             <td><?= $no++ ?></td>
-                                            <td><?= $data['borrower_name'] ?></td>
-                                            <td><?= $data['name'] ?></td>
+                                            <td><?= $data['user_name'] ?></td>
+                                            <td><?= $data['tool_name'] ?></td>
                                             <td><?= $data['number_tools'] ?> Items</td>
                                             <td><?= $data['loan_date'] ?></td>
                                             <td><?= $data['return_date'] ?></td>
